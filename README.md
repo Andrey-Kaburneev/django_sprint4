@@ -10,18 +10,23 @@
 <h3>Инструкция по установке:</h3>
 <ul>
   <li>Перейти в нужную директорию</li>
-  <li>Клонированировать репозиторий командой <i>git clone</i></li>
+  <li>Клонированировать репозиторий командой
+  <br>
+  <i>git clone</i>
+  </li>
   <li>Открыть проект в редакторе кода VSCode, PyCharm или других аналогах</li>
   <li>
-    Создайте виртуально окружение комадой:
+    Создайте виртуально окружение командой:
     <br>
     <i>python -m venv venv (для Windows)</i>
+    <br>
     <i>python3 -m venv venv (для Linux и macOS)</i>
   </li>
   <li>
     Активируйте виртуальное окружение:
     <br>
     <i>source venv/Scripts/activate (для Windows)</i>
+    <br>
     <i>source venv/bin/activate (для Linux и macOS)</i>
   </li>
   <li>
@@ -34,6 +39,6 @@
     <br>
     <i>python manage.py runserver</i>
   </li>
-/ul>
+</ul>
 
 
