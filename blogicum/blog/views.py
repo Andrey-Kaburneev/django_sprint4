@@ -1,21 +1,25 @@
+from datetime import datetime
+
 from django.forms import BaseModelForm
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse
-from blog.models import Post, Category
-from .forms import UserForm, PostForm
 from django.contrib.auth.models import User
 from django.views.generic import (
     UpdateView, ListView, CreateView, DeleteView,
     DetailView
 )
-from .forms import CommentForm, UserForm
-from blog.models import Post, Comment
 from django.views.generic.edit import FormMixin
-from datetime import datetime
 from django.utils import timezone
+
+from .forms import (
+    CommentForm, UserForm, PostForm
+)
+from blog.models import (
+    Post, Comment, Category
+)
 
 
 FIVE_RECENT_PUB = 10
@@ -87,7 +91,7 @@ class CategoryListView(ListView):
         self.category = get_object_or_404(
             Category, slug=self.kwargs['category_slug'],
             is_published=True, created_at__lte=datetime.now())
-        return Post.objects.filter(
+        return self.category.post_set.filter(
             category__slug=self.kwargs['category_slug'],
             is_published=True, pub_date__lte=datetime.now(),).annotate(
             comment_count=Count('comments')).order_by('-pub_date')
@@ -177,12 +181,12 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'blog/comment.html'
 
     def dispatch(self, request, *args, **kwargs):
-        self.posts = get_object_or_404(Post, pk=self.kwargs['pk'])
+        self._post = get_object_or_404(Post, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.post = self.posts
+        form.instance.post = self._post
         return super().form_valid(form)
 
     def get_success_url(self):

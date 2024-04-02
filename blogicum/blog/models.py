@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+MAX_LENGTH_TEXT = 256
+
 
 class BaseModel(models.Model):
     is_published = models.BooleanField(
@@ -20,7 +22,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH_TEXT,
         verbose_name='Заголовок'
     )
     description = models.TextField(
@@ -45,7 +47,7 @@ class Category(BaseModel):
 
 class Location(BaseModel):
     name = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH_TEXT,
         verbose_name='Название места'
     )
 
@@ -59,7 +61,7 @@ class Location(BaseModel):
 
 class Post(BaseModel):
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH_TEXT,
         verbose_name='Заголовок'
     )
     text = models.TextField(verbose_name='Текст')
@@ -100,7 +102,9 @@ class Post(BaseModel):
 
 
 class Comment(models.Model):
-    text = models.TextField('Комментарий')
+    text = models.TextField(
+        'Комментарий', max_length=MAX_LENGTH_TEXT
+    )
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
