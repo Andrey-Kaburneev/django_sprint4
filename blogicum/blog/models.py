@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-MAX_LENGTH_TEXT = 256
+MAX_LENGTH_COMMENT = 16
 
 
 class BaseModel(models.Model):
@@ -22,7 +22,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     title = models.CharField(
-        max_length=MAX_LENGTH_TEXT,
+        max_length=256,
         verbose_name='Заголовок'
     )
     description = models.TextField(
@@ -47,7 +47,7 @@ class Category(BaseModel):
 
 class Location(BaseModel):
     name = models.CharField(
-        max_length=MAX_LENGTH_TEXT,
+        max_length=256,
         verbose_name='Название места'
     )
 
@@ -61,7 +61,7 @@ class Location(BaseModel):
 
 class Post(BaseModel):
     title = models.CharField(
-        max_length=MAX_LENGTH_TEXT,
+        max_length=256,
         verbose_name='Заголовок'
     )
     text = models.TextField(verbose_name='Текст')
@@ -103,7 +103,7 @@ class Post(BaseModel):
 
 class Comment(models.Model):
     text = models.TextField(
-        'Комментарий', max_length=MAX_LENGTH_TEXT
+        'Комментарий', max_length=256
     )
     post = models.ForeignKey(
         Post,
@@ -122,4 +122,4 @@ class Comment(models.Model):
         ordering = ('created_at',)
 
     def __str__(self):
-        return self.text
+        return self.text[:MAX_LENGTH_COMMENT]
